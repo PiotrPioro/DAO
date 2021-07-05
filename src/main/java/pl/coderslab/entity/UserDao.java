@@ -19,7 +19,7 @@ public class UserDao {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public static User create(User user){
+    public User create(User user){
         try(Connection conn = DBConnection.connect_dao_data_base()){
             PreparedStatement stmt = conn.prepareStatement(CreateUserQuery, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, user.getUsername());
@@ -37,7 +37,7 @@ public class UserDao {
         return null;
     }
 
-    public static User read(int userID){
+    public User read(int userID){
         try(Connection conn = DBConnection.connect_dao_data_base()){
             PreparedStatement stmt2 = conn.prepareStatement(ReadUserQuery);
             stmt2.setInt(1, userID);
@@ -56,11 +56,11 @@ public class UserDao {
         return null;
     }
 
-    public static void printUser(User user){
-        System.out.println("Id: " + user.getId() + ", username: " + user.getUsername() + ", email: " + user.getEmail() + ", password " + user.getPassword());
+    public void printUser(User user){
+        System.out.println(user.toString());
     }
 
-    public static void update(User user){
+    public void update(User user){
         try(Connection conn = DBConnection.connect_dao_data_base()){
             PreparedStatement stmt3 = conn.prepareStatement(UpdateUserQuery);
             stmt3.setInt(4, user.getId());
@@ -73,7 +73,7 @@ public class UserDao {
         }
     }
 
-    public static void delete(int userId){
+    public void delete(int userId){
         try (Connection conn = DBConnection.connect_dao_data_base()) {
             PreparedStatement stmt4 = conn.prepareStatement(DeleteUserQuery);
             stmt4.setInt(1, userId);
@@ -83,7 +83,7 @@ public class UserDao {
         }
     }
 
-    public static User[] findAll(){
+    public User[] findAll(){
         User[] arrUser = new User[0];
         try(Connection conn = DBConnection.connect_dao_data_base()){
             PreparedStatement stmt5 = conn.prepareStatement(SelectNotEmptyRows);
